@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <?php include '../includes/head.php'; ?>
-    <title>Inicio - Smash Tennis Store</title>
+    <title>Inicio - Smash Tenis Store</title>
 </head>
 <body>
     <?php include '../includes/menu.php'; ?>
@@ -14,14 +14,14 @@
     ?>
 
     <div class="store-header">
-        <h1>🎾 Smash Tennis Store</h1>
+        <h1>Smash Tenis Store</h1>
         <p>¡Bienvenido a la tienda líder en tenis deportivos! Encuentra los mejores modelos, ofertas exclusivas y la mejor atención para potenciar tu juego.</p>
     </div>
 
     <div class="container my-5">
         <div class="row align-items-center mb-5">
             <div class="col-md-6">
-                <img src="../img/hero_tennis.png" alt="Tienda de tenis deportivos" class="img-fluid rounded shadow">
+                <img src="../assets/img/balen.jpg" alt="Tienda de tenis deportivos" class="img-fluid rounded shadow">
             </div>
             <div class="col-md-6">
                 <h2 class="mb-3" style="color:#4f8cff;">¡Equípate como un profesional!</h2>
@@ -50,17 +50,17 @@
 
         <div class="row text-center mb-5">
             <div class="col-md-4">
-                <img src="../img/envio_rapido.png" alt="Envío rápido" style="width:60px;">
+                <img src="../assets/img/envio_rapido.png" alt="Envío rápido" style="width:60px;">
                 <h5 class="mt-2">Envío rápido</h5>
                 <p>Recibe tus tenis en menos de 48 horas en cualquier parte del país.</p>
             </div>
             <div class="col-md-4">
-                <img src="../img/marcas.png" alt="Marcas originales" style="width:60px;">
+                <img src="../assets/img/calidad.png" alt="Marcas originales" style="width:60px;">
                 <h5 class="mt-2">Marcas originales</h5>
                 <p>Trabajamos solo con marcas reconocidas y productos 100% originales.</p>
             </div>
             <div class="col-md-4">
-                <img src="../img/soporte.png" alt="Soporte" style="width:60px;">
+                <img src="../assets/img/suport.png" alt="Soporte" style="width:60px;">
                 <h5 class="mt-2">Soporte experto</h5>
                 <p>¿Dudas? Nuestro equipo te asesora para elegir el mejor tenis para ti.</p>
             </div>
