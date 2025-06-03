@@ -2,7 +2,7 @@
 include '../includes/head.php';
 include '../includes/menu.php';
 include '../includes/db_connect.php';
-
+$conn = getConnection();
 session_start();
 
 if (!isset($_SESSION['user_id'])) {

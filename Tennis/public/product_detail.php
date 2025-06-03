@@ -6,6 +6,7 @@ include '../includes/db_connect.php';
 session_start();
 
 // Obtener detalles del producto
+$conn = getConnection();
 $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $product_query = "SELECT * FROM products WHERE id = ?";
 $stmt = $conn->prepare($product_query);

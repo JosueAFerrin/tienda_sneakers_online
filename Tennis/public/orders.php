@@ -3,7 +3,7 @@ include '../includes/head.php';
 include '../includes/menu.php';
 include '../includes/db_connect.php';
 session_start();
-
+$conn = getConnection();
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php?redirect=orders.php");
     exit();

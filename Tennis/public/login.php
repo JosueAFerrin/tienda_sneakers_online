@@ -1,33 +1,42 @@
 <?php
 session_start();
-include '../includes/db_connect.php';
+
+require_once '../includes/db_connect.php';
+require_once '../../src/Auth.php';
+
+use Grupo05\Tenis\Auth;
+
 $error = '';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+$conn = getConnection();
+if (!$conn) {
+    die('Error de conexión a la base de datos');
+}
 
-    $query = "SELECT * FROM users WHERE username = ? LIMIT 1";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+$auth = new Auth($conn);
 
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        if (password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['email'] = $user['email'];
-            header("Location: index.php");
-            exit();
-        } else {
-            $error = 'Contraseña incorrecta.';
-        }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    $user = $auth->login($username, $password);
+
+    if ($user) {
+        // Login correcto: guarda datos en sesión
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['email'] = $user['email'];
+
+        // Redirección, si hay parámetro redirect, úsalo
+        $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
+        header("Location: $redirect");
+        exit();
     } else {
-        $error = 'No existe un usuario con ese nombre.';
+        // Error de login
+        $error = $auth->error;
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="login-card">
             <h2>Iniciar Sesión</h2>
             <?php if ($error): ?>
-                <div class="alert alert-danger"><?php echo $error; ?></div>
+                <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>
             <form method="POST" action="login.php<?php echo isset($_GET['redirect']) ? '?redirect=' . htmlspecialchars($_GET['redirect']) : ''; ?>">
                 <div class="form-group">

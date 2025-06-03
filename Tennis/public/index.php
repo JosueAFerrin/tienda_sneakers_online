@@ -8,6 +8,7 @@
     <?php include '../includes/menu.php'; ?>
     <?php
     include '../includes/db_connect.php';
+    $conn = getConnection();
     // Obtener solo los 3 primeros productos como destacados
     $query = "SELECT * FROM products ORDER BY id ASC LIMIT 3";
     $result = $conn->query($query);

@@ -4,6 +4,7 @@ include '../includes/head.php';
 include '../includes/menu.php';
 
 // Obtener productos de la base de datos
+$conn = getConnection();
 $query = "SELECT * FROM products";
 $result = $conn->query($query);
 ?>
