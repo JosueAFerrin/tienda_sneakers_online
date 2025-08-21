@@ -7,7 +7,9 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "jest --verbose --forceExit --detectOpenHandles",
-    "test:coverage": "jest --coverage --forceExit --detectOpenHandles",
+    "test:coverage": "nyc --reporter=lcov --reporter=text npm test",
+    "coverage:check": "nyc check-coverage --lines 90 --functions 90 --branches 90",
+    "ci:test": "npm run test:coverage && npm run coverage:check",
     "test:watch": "jest --watch --forceExit --detectOpenHandles"
   },
   "keywords": [],
