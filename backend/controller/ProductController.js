@@ -1,5 +1,9 @@
 const Product = require('../model/Product');
-const environment = require('../environments/environment');
+// Cargar configuración según el entorno
+const envFile = process.env.NODE_ENV === 'production' ? 
+  '../environments/environment.prod' : 
+  '../environments/environment';
+const environment = require(envFile);
 
 class ProductController {
   static async getAllProducts(req, res) {
