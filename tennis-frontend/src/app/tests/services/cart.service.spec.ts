@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 import { CartItem } from '../../models/product.model';
+import { environment } from '../../../environments/environment';
 
 describe('CartService', () => {
   let service: CartService;
@@ -59,7 +60,7 @@ describe('CartService', () => {
       expect(items.length).toBe(2);
     });
 
-    const req = httpMock.expectOne('http://localhost:3000/api/cart');
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart`);
     expect(req.request.method).toBe('GET');
     expect(req.request.headers.get('Authorization')).toBe('Bearer mock-token');
     req.flush(mockCartItems);
@@ -85,7 +86,7 @@ describe('CartService', () => {
       expect(response).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne('http://localhost:3000/api/cart/add');
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart/add`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual({
       productId: productId,
@@ -107,7 +108,7 @@ describe('CartService', () => {
       expect(response).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`http://localhost:3000/api/cart/${itemId}`);
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart/${itemId}`);
     expect(req.request.method).toBe('PUT');
     expect(req.request.body).toEqual({ quantity: newQuantity });
     expect(req.request.headers.get('Authorization')).toBe('Bearer mock-token');
@@ -125,7 +126,7 @@ describe('CartService', () => {
       expect(response).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`http://localhost:3000/api/cart/${itemId}`);
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart/${itemId}`);
     expect(req.request.method).toBe('DELETE');
     expect(req.request.headers.get('Authorization')).toBe('Bearer mock-token');
     req.flush(mockResponse);
@@ -140,7 +141,7 @@ describe('CartService', () => {
       expect(response).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne('http://localhost:3000/api/cart');
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart`);
     expect(req.request.method).toBe('DELETE');
     expect(req.request.headers.get('Authorization')).toBe('Bearer mock-token');
     req.flush(mockResponse);
@@ -153,7 +154,7 @@ describe('CartService', () => {
       expect(count).toEqual(mockCount);
     });
 
-    const req = httpMock.expectOne('http://localhost:3000/api/cart/count');
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart/count`);
     expect(req.request.method).toBe('GET');
     expect(req.request.headers.get('Authorization')).toBe('Bearer mock-token');
     req.flush(mockCount);
@@ -167,7 +168,7 @@ describe('CartService', () => {
       }
     });
 
-    const req = httpMock.expectOne('http://localhost:3000/api/cart');
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart`);
     req.flush('Cart not found', { status: 404, statusText: 'Not Found' });
   });
 

@@ -13,7 +13,7 @@ async function updateImageUrls() {
     // Actualizar URLs que comenzaron con assets/images/ para apuntar al backend
     const updateQuery = `
       UPDATE products 
-      SET image = REPLACE(image, 'assets/images/', 'http://localhost:3000/uploads/') 
+      SET image = REPLACE(image, 'assets/images/', '${environment.API_URL}/uploads/') 
       WHERE image LIKE 'assets/images/image-%'
     `;
     

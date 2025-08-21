@@ -7,6 +7,7 @@ import { NotificationService } from '../services/notification.service';
 import { AuthService } from '../services/auth.service';
 import { CartService } from '../services/cart.service';
 import { CartItem } from '../models/product.model';
+import { environment } from '../../environments/environment';
 
 interface CheckoutForm {
   customer_name: string;
@@ -697,7 +698,7 @@ export class CartComponent implements OnInit {
         }))
       };
 
-      this.http.post('http://localhost:3000/api/orders', orderData, { headers })
+      this.http.post(`${environment.API_URL}/api/orders`, orderData, { headers })
         .subscribe({
           next: (response: any) => {
             this.isProcessing = false;
@@ -758,7 +759,7 @@ export class CartComponent implements OnInit {
       const token = localStorage.getItem('token');
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-      this.http.delete('http://localhost:3000/api/cart', { headers })
+      this.http.delete(`${environment.API_URL}/api/cart`, { headers })
         .subscribe({
           next: () => {
             setTimeout(() => {
@@ -843,7 +844,7 @@ export class CartComponent implements OnInit {
     
     // Si empieza con slash, agregar solo el dominio
     if (imagePath.startsWith('/')) {
-      return `http://localhost:3000${imagePath}`;
+      return `${environment.API_URL}${imagePath}`;
     }
     
     // Limpiar path y construir URL
@@ -852,7 +853,7 @@ export class CartComponent implements OnInit {
       return cleanPath;
     }
     
-    return `http://localhost:3000/${cleanPath}`;
+    return `${environment.API_URL}/${cleanPath}`;
   }
 
   prefillUserData(): void {

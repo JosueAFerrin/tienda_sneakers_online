@@ -7,6 +7,7 @@ import { CartComponent } from '../../components/cart.component';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
+import { environment } from '../../../environments/environment';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -104,7 +105,7 @@ describe('CartComponent', () => {
   it('should load cart items on init when user is logged in', () => {
     component.ngOnInit();
 
-    const req = httpMock.expectOne('http://localhost:3000/api/cart');
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart`);
     expect(req.request.method).toBe('GET');
     expect(req.request.headers.get('Authorization')).toBe('Bearer mock-token');
     
@@ -125,7 +126,7 @@ describe('CartComponent', () => {
     spyOn(console, 'error');
     component.ngOnInit();
 
-    const req = httpMock.expectOne('http://localhost:3000/api/cart');
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart`);
     req.flush('Error loading cart', { status: 500, statusText: 'Internal Server Error' });
 
     expect(console.error).toHaveBeenCalled();
@@ -177,7 +178,7 @@ describe('CartComponent', () => {
     
     component.updateQuantity(item, newQuantity);
 
-    const req = httpMock.expectOne(`http://localhost:3000/api/cart/${item.id}`);
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart/${item.id}`);
     expect(req.request.method).toBe('PUT');
     expect(req.request.body).toEqual({ quantity: newQuantity });
     
@@ -194,7 +195,7 @@ describe('CartComponent', () => {
       `Solo disponemos de ${item.stock} unidades de este producto`,
       '⚠️ Stock Limitado'
     );
-    httpMock.expectNone(`http://localhost:3000/api/cart/${item.id}`);
+    httpMock.expectNone(`${environment.API_URL}/api/cart/${item.id}`);
   });
 
   it('should remove item from cart successfully', () => {
@@ -204,7 +205,7 @@ describe('CartComponent', () => {
     
     component.removeFromCart(itemId);
 
-    const req = httpMock.expectOne(`http://localhost:3000/api/cart/${itemId}`);
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart/${itemId}`);
     expect(req.request.method).toBe('DELETE');
     
     req.flush({ message: 'Item removed' });
@@ -216,7 +217,7 @@ describe('CartComponent', () => {
     
     component.removeFromCart(itemId);
 
-    httpMock.expectNone(`http://localhost:3000/api/cart/${itemId}`);
+    httpMock.expectNone(`${environment.API_URL}/api/cart/${itemId}`);
     expect(component.loadingItemId).toBe(null);
   });
 
@@ -226,7 +227,7 @@ describe('CartComponent', () => {
     
     component.clearCart();
 
-    const req = httpMock.expectOne('http://localhost:3000/api/cart');
+    const req = httpMock.expectOne(`${environment.API_URL}/api/cart`);
     expect(req.request.method).toBe('DELETE');
     
     req.flush({ message: 'Cart cleared' });
@@ -272,7 +273,7 @@ describe('CartComponent', () => {
 
   it('should get image URL correctly', () => {
     expect(component.getImageUrl('assets/img/nike.jpg')).toBe('assets/img/nike.jpg');
-    expect(component.getImageUrl('../img/nike.jpg')).toBe('http://localhost:3000/img/nike.jpg');
+    expect(component.getImageUrl('../img/nike.jpg')).toBe(`${environment.API_URL}/img/nike.jpg`);
     expect(component.getImageUrl('http://example.com/image.jpg')).toBe('http://example.com/image.jpg');
     expect(component.getImageUrl('')).toBe('assets/img/default-shoe.jpg');
   });
@@ -321,7 +322,7 @@ describe('CartComponent', () => {
     
     // Simulate timeout
     setTimeout(() => {
-      const req = httpMock.expectOne('http://localhost:3000/api/orders');
+      const req = httpMock.expectOne(`${environment.API_URL}/api/orders`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body.payment_method).toBe('cash');
       req.flush(mockResponse);
@@ -351,7 +352,7 @@ describe('CartComponent', () => {
 
     // Simulate timeout
     setTimeout(() => {
-      const req = httpMock.expectOne('http://localhost:3000/api/orders');
+      const req = httpMock.expectOne(`${environment.API_URL}/api/orders`);
       req.flush({ error: 'Server error' }, { status: 500, statusText: 'Internal Server Error' });
 
       expect(notificationServiceSpy.showError).toHaveBeenCalledWith('Error al procesar el pedido. Por favor intenta nuevamente.');
@@ -401,7 +402,7 @@ describe('CartComponent', () => {
     component.processCheckout(mockForm);
 
     expect(notificationServiceSpy.showError).toHaveBeenCalledWith('Todos los campos son obligatorios y deben ser válidos');
-    httpMock.expectNone('http://localhost:3000/api/orders');
+    httpMock.expectNone(`${environment.API_URL}/api/orders`);
   });
 
   it('should handle edge cases in calculation methods', () => {

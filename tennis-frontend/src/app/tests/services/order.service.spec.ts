@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { OrderService } from '../../services/order.service';
 import { AuthService } from '../../services/auth.service';
 import { Order, CreateOrderResponse } from '../../models/product.model';
+import { environment } from '../../../environments/environment';
 
 describe('OrderService', () => {
   let service: OrderService;
@@ -87,7 +88,7 @@ describe('OrderService', () => {
         expect(response).toEqual(mockCreateOrderResponse);
       });
 
-      const req = httpMock.expectOne('http://localhost:3000/api/orders');
+      const req = httpMock.expectOne(`${environment.API_URL}/api/orders`);
       expect(req.request.method).toBe('POST');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       expect(req.request.headers.get('Content-Type')).toBe('application/json');
@@ -105,7 +106,7 @@ describe('OrderService', () => {
         }
       });
 
-      const req = httpMock.expectOne('http://localhost:3000/api/orders');
+      const req = httpMock.expectOne(`${environment.API_URL}/api/orders`);
       req.flush('Cart is empty', { status: 400, statusText: 'Bad Request' });
     });
   });
@@ -119,7 +120,7 @@ describe('OrderService', () => {
         expect(orders.length).toBe(2);
       });
 
-      const req = httpMock.expectOne('http://localhost:3000/api/orders');
+      const req = httpMock.expectOne(`${environment.API_URL}/api/orders`);
       expect(req.request.method).toBe('GET');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(mockOrders);
@@ -132,7 +133,7 @@ describe('OrderService', () => {
         expect(orders).toEqual([]);
       });
 
-      const req = httpMock.expectOne('http://localhost:3000/api/orders');
+      const req = httpMock.expectOne(`${environment.API_URL}/api/orders`);
       req.flush([]);
     });
 
@@ -146,7 +147,7 @@ describe('OrderService', () => {
         }
       });
 
-      const req = httpMock.expectOne('http://localhost:3000/api/orders');
+      const req = httpMock.expectOne(`${environment.API_URL}/api/orders`);
       req.flush('Unauthorized', { status: 401, statusText: 'Unauthorized' });
     });
   });
@@ -160,7 +161,7 @@ describe('OrderService', () => {
         expect(order).toEqual(mockOrder);
       });
 
-      const req = httpMock.expectOne(`http://localhost:3000/api/orders/${orderId}`);
+      const req = httpMock.expectOne(`${environment.API_URL}/api/orders/${orderId}`);
       expect(req.request.method).toBe('GET');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(mockOrder);
@@ -177,7 +178,7 @@ describe('OrderService', () => {
         }
       });
 
-      const req = httpMock.expectOne(`http://localhost:3000/api/orders/${orderId}`);
+      const req = httpMock.expectOne(`${environment.API_URL}/api/orders/${orderId}`);
       req.flush('Order not found', { status: 404, statusText: 'Not Found' });
     });
   });
@@ -191,7 +192,7 @@ describe('OrderService', () => {
         expect(response).toEqual(mockCreateOrderResponse);
       });
 
-      const req = httpMock.expectOne(`http://localhost:3000/api/orders/${orderId}/reorder`);
+      const req = httpMock.expectOne(`${environment.API_URL}/api/orders/${orderId}/reorder`);
       expect(req.request.method).toBe('POST');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       expect(req.request.body).toEqual({});
@@ -209,7 +210,7 @@ describe('OrderService', () => {
         }
       });
 
-      const req = httpMock.expectOne(`http://localhost:3000/api/orders/${orderId}/reorder`);
+      const req = httpMock.expectOne(`${environment.API_URL}/api/orders/${orderId}/reorder`);
       req.flush('Cannot reorder this order', { status: 400, statusText: 'Bad Request' });
     });
   });

@@ -1,0 +1,49 @@
+name: CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy-frontend:
+    name: Deploy Frontend Firebase
+    runs-on: ubuntu-latest
+    needs: [frontend, backend, performance]
+    defaults:
+      run:
+        working-directory: tennis-frontend
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run build -- --prod
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          channelId: live
+          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
+
+  deploy-backend:
+    name: Deploy Backend Render
+    runs-on: ubuntu-latest
+    needs: [frontend, backend, performance]
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Deploy to Render
+        run: |
+          npm install -g @render/cli
+          render login --api-key ${{ secrets.RENDER_API_KEY }}
+          render deploy service --service-id ${{ secrets.RENDER_SERVICE_ID }}

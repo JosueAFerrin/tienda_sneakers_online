@@ -6,6 +6,7 @@ import { CartService } from '../services/cart.service';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
 import { Product } from '../models/product.model';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-products',
@@ -135,7 +136,7 @@ export class ProductsComponent implements OnInit {
     
     // Si empieza con slash, agregar solo el dominio
     if (imagePath.startsWith('/')) {
-      return `http://localhost:3000${imagePath}`;
+      return `${environment.API_URL}${imagePath}`;
     }
     
     // Limpiar path y construir URL
@@ -144,6 +145,6 @@ export class ProductsComponent implements OnInit {
       return cleanPath;
     }
     
-    return `http://localhost:3000/${cleanPath}`;
+    return `${environment.API_URL}/${cleanPath}`;
   }
 }

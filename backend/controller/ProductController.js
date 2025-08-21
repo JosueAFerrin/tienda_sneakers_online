@@ -1,4 +1,5 @@
 const Product = require('../model/Product');
+import environment from '../environments/environment';
 
 class ProductController {
   static async getAllProducts(req, res) {
@@ -31,7 +32,7 @@ class ProductController {
       // Si se subió una imagen, generar la URL
       let imageUrl = 'assets/images/default-shoe.jpg'; // imagen por defecto
       if (req.file) {
-        imageUrl = `http://localhost:3000/uploads/${req.file.filename}`;
+        imageUrl = `${environment.API_URL}/uploads/${req.file.filename}`;
       }
       
       const result = await Product.create({ 
@@ -73,7 +74,7 @@ class ProductController {
       
       // Si se subió una nueva imagen, actualizar la URL
       if (req.file) {
-        updateData.image = `http://localhost:3000/uploads/${req.file.filename}`;
+        updateData.image = `${environment.API_URL}/uploads/${req.file.filename}`;
       }
       
       await Product.update(productId, updateData);

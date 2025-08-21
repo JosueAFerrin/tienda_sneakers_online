@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest, RegisterRequest, AuthResponse } from '../../models/product.model';
+import { environment } from '../../../environments/environment';
+
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -49,7 +51,7 @@ describe('AuthService', () => {
       expect(service.isLoggedIn()).toBeTruthy();
     });
 
-    const req = httpMock.expectOne('http://localhost:3000/api/auth/login');
+    const req = httpMock.expectOne(`${environment.API_URL}/api/auth/login`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(mockLoginRequest);
     req.flush(mockResponse);
@@ -77,7 +79,7 @@ describe('AuthService', () => {
       expect(service.isLoggedIn()).toBeTruthy();
     });
 
-    const req = httpMock.expectOne('http://localhost:3000/api/auth/register');
+    const req = httpMock.expectOne(`${environment.API_URL}/api/auth/register`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(mockRegisterRequest);
     req.flush(mockResponse);
@@ -165,7 +167,7 @@ describe('AuthService', () => {
     
     service.login(credentials).subscribe();
     
-    const req = httpMock.expectOne('http://localhost:3000/api/auth/login');
+    const req = httpMock.expectOne(`${environment.API_URL}/api/auth/login`);
     req.flush({ token: 'test-token', user: mockUser });
     
     expect(emittedUser).toEqual(mockUser);

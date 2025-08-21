@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product.model';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -119,7 +120,7 @@ export class HomeComponent implements OnInit {
     
     // Si empieza con slash, agregar solo el dominio
     if (imagePath.startsWith('/')) {
-      return `http://localhost:3000${imagePath}`;
+      return `${environment.API_URL}${imagePath}`;
     }
     
     // Limpiar path y construir URL
@@ -128,6 +129,6 @@ export class HomeComponent implements OnInit {
       return cleanPath;
     }
     
-    return `http://localhost:3000/${cleanPath}`;
+    return `${environment.API_URL}/${cleanPath}`;
   }
 }

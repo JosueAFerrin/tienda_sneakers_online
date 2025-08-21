@@ -84,7 +84,7 @@ npm run dev
 # o
 npm start
 ```
-El servidor estará disponible en `http://localhost:3000`
+El servidor estará disponible en `${environment.API_URL}`
 
 ### Iniciar Frontend
 ```bash

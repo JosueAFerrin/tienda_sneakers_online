@@ -4,7 +4,7 @@ Este directorio contiene scripts de prueba de rendimiento y carga usando k6 para
 
 ## Requisitos Previos
 
-1. **Backend funcionando**: El servidor debe estar corriendo en `http://localhost:3000`
+1. **Backend funcionando**: El servidor debe estar corriendo en `${environment.API_URL}`
 2. **Base de datos configurada**: Con las tablas necesarias creadas
 3. **Usuario Admin creado**: Username: `Admin`, Password: `123456`
 4. **k6 instalado**: Para ejecutar las pruebas de performance

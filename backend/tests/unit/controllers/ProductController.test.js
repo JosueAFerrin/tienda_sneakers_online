@@ -1,6 +1,7 @@
 // tests/unit/controllers/ProductController.test.js
 const ProductController = require('../../../controller/ProductController');
 const Product = require('../../../model/Product');
+import environment from '../../../environments/environment';
 
 jest.mock('../../../model/Product');
 
@@ -109,7 +110,7 @@ describe('ProductController', () => {
         name: 'New Product',
         description: 'Description',
         price: 100,
-        image: 'http://localhost:3000/uploads/product-image.jpg'
+        image: `${environment.API_URL}/uploads/product-image.jpg`
       });
     });
 

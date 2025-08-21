@@ -6,6 +6,7 @@ import { Product } from '../models/product.model';
 import { ProductService } from '../services/product.service';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-admin',
@@ -424,7 +425,7 @@ export class AdminComponent implements OnInit {
     
     // Si empieza con slash, agregar solo el dominio
     if (imagePath.startsWith('/')) {
-      return `http://localhost:3000${imagePath}`;
+      return `${environment.API_URL}${imagePath}`;
     }
     
     // Limpiar path y construir URL
@@ -433,6 +434,6 @@ export class AdminComponent implements OnInit {
       return cleanPath;
     }
     
-    return `http://localhost:3000/${cleanPath}`;
+    return `${environment.API_URL}/${cleanPath}`;
   }
 }
