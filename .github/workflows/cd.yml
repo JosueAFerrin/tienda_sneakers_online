@@ -5,16 +5,61 @@ on:
     branches: [ main ]
 
 jobs:
-  deploy-frontend:
-    name: Deploy Frontend
+  # Job para construir el frontend
+  build-frontend:
+    name: Build Frontend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build Frontend
+        run: npm run build
+        working-directory: frontend
+
+      - name: Upload Frontend Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-dist
+          path: frontend/dist
+
+  # Job para construir el backend (opcional si necesitas build)
+  build-backend:
+    name: Build Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - run: npm ci
+        working-directory: backend
+
+  # Job para deploy del frontend
+  deploy-frontend:
+    name: Deploy Frontend
+    runs-on: ubuntu-latest
+    needs: build-frontend # espera a que termine el build del frontend
+    steps:
+      - uses: actions/checkout@v3
+
       - name: Download Frontend Build
         uses: actions/download-artifact@v4
         with:
           name: frontend-dist
           path: ./dist
+
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -23,17 +68,22 @@ jobs:
           channelId: live
           projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
 
+  # Job para deploy del backend
   deploy-backend:
     name: Deploy Backend
     runs-on: ubuntu-latest
+    needs: build-backend # espera a que termine el build del backend
     steps:
       - uses: actions/checkout@v3
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+
       - run: npm ci
         working-directory: backend
+
       - name: Deploy Backend to Render/Heroku/VPS
         run: |
           echo "Aquí pondrías el comando de despliegue, por ejemplo:"
