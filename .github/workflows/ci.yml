@@ -64,7 +64,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup k6
-        uses: grafana/setup-k6@v1
+        uses: grafana/setup-k6@v2
       - name: Run Ramp Test
         run: k6 run ramp.js --out json=ramp.json
       - name: Run Spike Test
