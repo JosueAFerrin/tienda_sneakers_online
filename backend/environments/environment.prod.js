@@ -2,6 +2,6 @@
 module.exports = {
   environment: {
     production: true,
-    apiUrl: process.env.API_URL || 'http://localhost:3000'
+    apiUrl: 'https://tienda-sneakers-online.onrender.com'
   }
 };
