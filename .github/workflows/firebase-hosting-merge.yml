@@ -26,3 +26,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROYECTOTENNIS_6B63B }}
           channelId: live
           projectId: proyectotennis-6b63b
+          entryPoint: tennis-frontend
