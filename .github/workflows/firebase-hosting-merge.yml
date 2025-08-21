@@ -18,7 +18,7 @@ jobs:
         run: npm install
 
       - name: Build Angular App
-        run: npm run build
+        run: npm run build:prod
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
