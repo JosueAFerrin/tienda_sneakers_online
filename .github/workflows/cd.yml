@@ -29,9 +29,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: frontend-dist
-          path: tennis-frontend/dist
+          path: tennis-frontend/dist/tennis-frontend
 
-  # Job para construir el backend (opcional si necesitas build)
+  # Job para construir el backend
   build-backend:
     name: Build Backend
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: frontend-dist
-          path: ./dist
+          path: ./dist/tennis-frontend   # <<--- aquí debe coincidir con firebase.json
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
@@ -67,7 +67,6 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
           channelId: live
           projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
-          entryPoint: tennis-frontend
 
   # Job para deploy del backend
   deploy-backend:
@@ -89,4 +88,3 @@ jobs:
         run: |
           echo "Aquí pondrías el comando de despliegue, por ejemplo:"
           # heroku deploy:jar backend/build/app.jar --app ${{ secrets.HEROKU_APP_NAME }}
-          # o docker push + kubectl apply, según tu infraestructura
