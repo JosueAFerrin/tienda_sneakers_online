@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/tennis-frontend",
+    "public": "tennis-frontend/dist/tennis-frontend",
     "ignore": [
       "firebase.json",
       "**/.*",
