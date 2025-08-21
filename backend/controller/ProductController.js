@@ -1,5 +1,5 @@
 const Product = require('../model/Product');
-import environment from '../environments/environment';
+const environment = require('../environments/environment');
 
 class ProductController {
   static async getAllProducts(req, res) {

@@ -1,4 +1,7 @@
-export const environment = {
-  production: true,
-  API_URL: 'https://tienda-sneakers-online.onrender.com'
+// environments/environment.js
+module.exports = {
+  environment: {
+    production: true,
+    apiUrl: 'https://tienda-sneakers-online.onrender.com'
+  }
 };

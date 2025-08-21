@@ -15,6 +15,7 @@ interface CheckoutForm {
   customer_phone: string;
   shipping_address: string;
   shipping_city: string;
+  shipping_postal_code?: string; // Optional for future use
   payment_method: string;
 }
 

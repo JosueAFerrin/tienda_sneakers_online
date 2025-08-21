@@ -1,7 +1,7 @@
 // tests/unit/controllers/ProductController.test.js
 const ProductController = require('../../../controller/ProductController');
 const Product = require('../../../model/Product');
-import environment from '../../../environments/environment';
+const environment = require('../../../environments/environment');
 
 jest.mock('../../../model/Product');
 

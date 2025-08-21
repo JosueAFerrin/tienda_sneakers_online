@@ -314,7 +314,7 @@ class ProductController {
   static async createProduct(req, res) {
     try {
       const { name, description, price } = req.body;
-      import environment from '../../environments/environment';
+      const environment = require('../environments/environment');
       
       // Si se subió una imagen, generar la URL
       let imageUrl = 'assets/images/default-shoe.jpg'; // imagen por defecto

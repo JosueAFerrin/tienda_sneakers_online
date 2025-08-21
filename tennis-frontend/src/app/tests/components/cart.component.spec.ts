@@ -27,7 +27,9 @@ describe('CartComponent', () => {
       quantity: 2,
       size: '42',
       image_url: 'assets/img/nike.jpg',
-      stock: 10
+      stock: 10,
+      name: 'Nike Air Max',
+      image: 'assets/img/nike.jpg'
     },
     {
       id: 2,
@@ -37,7 +39,9 @@ describe('CartComponent', () => {
       quantity: 1,
       size: '43',
       image_url: 'assets/img/adidas.jpg',
-      stock: 5
+      stock: 5,
+      name: 'Adidas Ultraboost',
+      image: 'assets/img/adidas.jpg'
     }
   ];
 
