@@ -1,91 +1,36 @@
-name: CD
+name: Deploy Tennis Frontend
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  # Job para construir el frontend
-  build-frontend:
-    name: Build Frontend
+  build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+    defaults:
+      run:
+        working-directory: tennis-frontend
 
-      - name: Setup Node
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
       - name: Install dependencies
         run: npm ci
-        working-directory: tennis-frontend
 
-      - name: Build Frontend
-        run: npm run build
-        working-directory: tennis-frontend
-
-      - name: Upload Frontend Build
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-dist
-          path: tennis-frontend/dist/tennis-frontend
-
-  # Job para construir el backend
-  build-backend:
-    name: Build Backend
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - run: npm ci
-        working-directory: backend
-
-  # Job para deploy del frontend
-  deploy-frontend:
-    name: Deploy Frontend
-    runs-on: ubuntu-latest
-    needs: build-frontend
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Download Frontend Build
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-dist
-          path: ./dist/tennis-frontend   # <<--- aquí debe coincidir con firebase.json
+      - name: Build Angular app
+        run: npm run build -- --prod
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
-          channelId: live
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
-          entryPoint: tennis-frontend # <<--- aquí debe coincidir con firebase.json
-
-  # Job para deploy del backend
-  deploy-backend:
-    name: Deploy Backend
-    runs-on: ubuntu-latest
-    needs: build-backend
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - run: npm ci
-        working-directory: backend
-
-      - name: Deploy Backend to Render/Heroku/VPS
-        run: |
-          echo "Aquí pondrías el comando de despliegue, por ejemplo:"
-          # heroku deploy:jar backend/build/app.jar --app ${{ secrets.HEROKU_APP_NAME }}
+          entryPoint: tennis-frontend
