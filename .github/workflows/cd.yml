@@ -6,35 +6,28 @@ on:
 
 jobs:
   deploy-frontend:
-    name: Deploy Frontend Firebase
+    name: Deploy Frontend
     runs-on: ubuntu-latest
-    needs: [frontend, backend, performance]
-    defaults:
-      run:
-        working-directory: tennis-frontend
+    needs: [frontend, backend, performance] # requiere que CI pase
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - name: Download Frontend Build
+        uses: actions/download-artifact@v4
         with:
-          node-version: '20'
-      - run: npm ci
-      - run: npm run build -- --prod
+          name: frontend-dist
+          path: ./dist
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
           channelId: live
           projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
 
   deploy-backend:
-    name: Deploy Backend Render
+    name: Deploy Backend
     runs-on: ubuntu-latest
-    needs: [frontend, backend, performance]
-    defaults:
-      run:
-        working-directory: backend
+    needs: [frontend, backend, performance] # requiere que CI pase
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node
@@ -42,8 +35,9 @@ jobs:
         with:
           node-version: '20'
       - run: npm ci
-      - name: Deploy to Render
+        working-directory: backend
+      - name: Deploy Backend to Render/Heroku/VPS
         run: |
-          npm install -g @render/cli
-          render login --api-key ${{ secrets.RENDER_API_KEY }}
-          render deploy service --service-id ${{ secrets.RENDER_SERVICE_ID }}
+          echo "Aquí pondrías el comando de despliegue, por ejemplo:"
+          # heroku deploy:jar backend/build/app.jar --app ${{ secrets.HEROKU_APP_NAME }}
+          # o docker push + kubectl apply, según tu infraestructura
